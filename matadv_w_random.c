@@ -471,6 +471,9 @@ int main(int argc, char *argv[]) {
     char buf[1028], move[12];
     int len, mlen, player1;
 
+    /* Set up the random generator */
+    srand(time(NULL));
+
     /* Convert command line parameters */
     SecPerMove = (float) atof(argv[1]); /* Time allotted for each move */
     MaxDepth = (argc == 4) ? atoi(argv[3]) : -1;
@@ -538,6 +541,17 @@ double evalBoard(State *currBoard) {
     int red_total = 0;
     int white_total = 0;
 
+    //rand number between 0 & 1
+    int done = 0;
+    double r = 1.0;
+    while (done == 0) {
+        r = (rand() % 10000) / 10000.0;
+        if (r > 0.8) {
+            r += 0.1;
+            done = 1;
+        }
+    }
+
     for (x = 0; x < 8; x++)
         for (y = 0; y < 8; y++) {
             if (king(currBoard->board[x][y]))
@@ -548,8 +562,8 @@ double evalBoard(State *currBoard) {
                 else white_total += 1;
         }
 
-    if (me == 1) return red_total - white_total;
-    else return white_total - red_total;
+    if (me == 1) return r * (red_total - white_total);
+    else return r * (white_total - red_total);
 
     //return score;
 }
