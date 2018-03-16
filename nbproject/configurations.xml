@@ -4,7 +4,9 @@
     <df root="." name="0">
       <in>checkers.c</in>
       <in>graphics.c</in>
-      <in>myprog.c</in>
+      <in>material_advantage.c</in>
+      <in>material_ratio.c</in>
+      <in>material_ratio.h</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -62,9 +64,13 @@
         <cTool flags="0">
         </cTool>
       </item>
-      <item path="myprog.c" ex="false" tool="0" flavor2="3">
+      <item path="material_advantage.c" ex="false" tool="0" flavor2="3">
         <cTool flags="0">
         </cTool>
+      </item>
+      <item path="material_ratio.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="material_ratio.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

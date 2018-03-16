@@ -6,8 +6,10 @@
       <in>checkers.h</in>
       <in>graphics.c</in>
       <in>graphics.h</in>
-      <in>myprog.c</in>
-      <in>myprog.h</in>
+      <in>material_advantage.c</in>
+      <in>material_advantage.h</in>
+      <in>material_ratio.c</in>
+      <in>material_ratio.h</in>
     </df>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
