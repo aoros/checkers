@@ -6,11 +6,11 @@ CPPFLAGS        := -I./ -I/usr/X11R6/include/Xm -I/usr/X11R6/include -I/usr/incl
 LDFLAGS         := -L/usr/X11R6/lib -L /usr/X11R6/LessTif/Motif1.2/lib -lXm -lXmu -lXt -lX11 -lICE -lSM -pthread -L/usr/lib64/openmotif/
 
 # Uncomment this next line if you'd like to compile the graphical version of the checkers server.
-CFLAGS          += -DGRAPHICS
+# CFLAGS          += -DGRAPHICS
 
 all: checkers computer 
 checkers: graphics.o
-computer: myprog.o
+computer: material_advantage.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
 
 

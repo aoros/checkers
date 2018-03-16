@@ -9,11 +9,11 @@
 #define COMPUTER 2
 
 struct Square {
-        Widget widget;
-        int val;
-        int state;
-        int col;
-        int hilite;
+    Widget widget;
+    int val;
+    int state;
+    int col;
+    int hilite;
 };
 
 /** Available to all **/
