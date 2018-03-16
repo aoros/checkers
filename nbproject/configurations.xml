@@ -2,6 +2,8 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
+      <in>abeprog.c</in>
+      <in>abeprog.h</in>
       <in>checkers.c</in>
       <in>graphics.c</in>
       <in>material_advantage.c</in>
@@ -56,6 +58,10 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
+      <item path="abeprog.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="abeprog.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="checkers.c" ex="false" tool="0" flavor2="3">
         <cTool flags="0">
         </cTool>
