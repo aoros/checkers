@@ -1,0 +1,15 @@
+called: gcc
+	/home/abeoros/NetBeansProjects/checkers
+	gcc
+	-Wall
+	-ggdb
+	-DGRAPHICS
+	-I./
+	-I/usr/X11R6/include/Xm
+	-I/usr/X11R6/include
+	-I/usr/include/openmotif
+	-c
+	-o
+	graphics.o
+	graphics.c
+
