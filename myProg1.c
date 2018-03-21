@@ -561,8 +561,8 @@ double evalBoard(State *currBoard) {
                 else white_total += 1;
         }
 
-    if (me == 1) return r * (red_total - white_total);
-    else return r * (white_total - red_total);
+    if (me == 1) return r * (red_total / white_total);
+    else return r * (white_total / red_total);
 
     //return score;
 }

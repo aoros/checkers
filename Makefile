@@ -8,15 +8,19 @@ LDFLAGS         := -L/usr/X11R6/lib -L /usr/X11R6/LessTif/Motif1.2/lib -lXm -lXm
 # Uncomment this next line if you'd like to compile the graphical version of the checkers server.
 CFLAGS          += -DGRAPHICS
 
-all: checkers matadv matrat matadv_rand
+all: checkers ma mr ma_r mr_r p1
 checkers: graphics.o
-matadv: material_advantage.o
+ma: material_advantage.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
-matrat: material_ratio.o
+mr: material_ratio.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
-matadv_rand: matadv_w_random.o
+ma_r: matadv_w_random.o
+	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
+mr_r: matrat_w_random.o
+	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
+p1: myProg1.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
 
 .PHONY: clean
-clean:	
-	@-rm checkers matadv matrat matadv_rand *.o
+clean:
+	@-rm checkers ma mr ma_r mr_r p1 *.o
