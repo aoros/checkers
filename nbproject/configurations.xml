@@ -2,6 +2,8 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
+      <in>abeProg_1.c</in>
+      <in>abeProg_1.h</in>
       <in>checkers.c</in>
       <in>graphics.c</in>
       <in>matadv_w_random.c</in>
@@ -13,6 +15,8 @@
       <in>matrat_w_random.h</in>
       <in>myProg1.c</in>
       <in>myProg1.h</in>
+      <in>timProg.c</in>
+      <in>timProg.h</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -62,6 +66,10 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
+      <item path="abeProg_1.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="abeProg_1.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="checkers.c" ex="false" tool="0" flavor2="3">
         <cTool flags="0">
         </cTool>
@@ -89,6 +97,10 @@
       <item path="myProg1.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="myProg1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="timProg.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="timProg.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

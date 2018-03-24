@@ -6,21 +6,17 @@ CPPFLAGS        := -I./ -I/usr/X11R6/include/Xm -I/usr/X11R6/include -I/usr/incl
 LDFLAGS         := -L/usr/X11R6/lib -L /usr/X11R6/LessTif/Motif1.2/lib -lXm -lXmu -lXt -lX11 -lICE -lSM -pthread -L/usr/lib64/openmotif/
 
 # Uncomment this next line if you'd like to compile the graphical version of the checkers server.
-CFLAGS          += -DGRAPHICS
+# CFLAGS          += -DGRAPHICS
 
-all: checkers ma mr ma_r mr_r p1
+all: checkers ma mr abe1
 checkers: graphics.o
 ma: material_advantage.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
 mr: material_ratio.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
-ma_r: matadv_w_random.o
-	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
-mr_r: matrat_w_random.o
-	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
-p1: myProg1.o
+abe1: abeProg_1.o
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ $^
 
 .PHONY: clean
 clean:
-	@-rm checkers ma mr ma_r mr_r p1 *.o
+	@-rm checkers ma mr abe1 *.o

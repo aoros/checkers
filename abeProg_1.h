@@ -52,8 +52,6 @@ int FindKingJump(int player, char board[8][8], char move[12], int len, int x, in
 int FindJump(int player, char board[8][8], char move[12], int len, int x, int y);
 int FindLegalMoves(struct State *state);
 int EVAL(char Board[8][8]);
-int MaxVal(struct State *state, int alpha, int beta, int depth);
-int MinVal(struct State *state, int alpha, int beta, int depth);
 void FindBestMove(int player);
 void NumberToXY(char num, int *x, int *y);
 int MoveLength(char move[12]);
@@ -61,7 +59,7 @@ int TextToMove(char *mtext, char move[12]);
 void MoveToText(char move[12], char *mtext);
 void PerformMove(char board[8][8], char move[12], int mlen);
 double evalBoard(State *currBoard);
-double minVal(struct State *state, int depth);
-double maxVal(struct State *state, int depth);
+double minVal(struct State *state, int depth, double alpha, double beta);
+double maxVal(struct State *state, int depth, double alpha, double beta);
 
 #endif

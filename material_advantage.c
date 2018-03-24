@@ -229,8 +229,7 @@ int FindLegalMoves(struct State *state) {
                     move[0] = number(board[y][x]) + 1;
                     FindKingJump(state->player, board, move, 1, x, y);
                     if (!jumpptr) FindKingMoves(board, x, y);
-                }
-                else if (piece(board[y][x])) { /* Piece */
+                } else if (piece(board[y][x])) { /* Piece */
                     move[0] = number(board[y][x]) + 1;
                     FindJump(state->player, board, move, 1, x, y);
                     if (!jumpptr) FindMoves(state->player, board, x, y);
@@ -242,8 +241,7 @@ int FindLegalMoves(struct State *state) {
             for (y = 0; y < 12; y++)
                 state->movelist[x][y] = jumplist[x][y];
         state->numLegalMoves = jumpptr;
-    }
-    else {
+    } else {
         for (x = 0; x < numLegalMoves; x++)
             for (y = 0; y < 12; y++)
                 state->movelist[x][y] = movelist[x][y];
@@ -257,10 +255,11 @@ int FindLegalMoves(struct State *state) {
 
 /* and the PerformMove function */
 void FindBestMove(int player) {
-    int i, x;
+    int x;
+    int bestMoveIndex;
     struct State state;
 
-    int maxDepth = 6;
+    int maxDepth = 2;
     double maxVal = -10000.0;
 
     /* Set up the current state */
@@ -274,9 +273,9 @@ void FindBestMove(int player) {
     // For now, until you write your search routine, we will just set the best move
     // to be a random (legal) one, so that it plays a legal game of checkers.
     // You *will* want to replace this with a more intelligent move seleciton
-    i = rand() % state.numLegalMoves;
-    memcpy(bestmove, state.movelist[i], MoveLength(state.movelist[i]));
+    bestMoveIndex = rand() % state.numLegalMoves;
 
+    maxVal = -100000.0;
     for (x = 0; x < state.numLegalMoves; x++) {
         struct State newState;
         double val;
@@ -284,16 +283,18 @@ void FindBestMove(int player) {
         PerformMove(newState.board, state.movelist[x], MoveLength(state.movelist[x]));
         if (state.player == 1) newState.player = 2;
         else newState.player = 1;
-        val = minVal(&newState, maxDepth);
+        val = minVal(&newState, maxDepth, -10000.0, 10000.0);
         if (val > maxVal) {
-            i = x;
+            bestMoveIndex = x;
             maxVal = val;
+        } else if (val == maxVal) {
+            if (drand48() > 0.5) bestMoveIndex = x;
         }
     }
-    memcpy(bestmove, state.movelist[i], MoveLength(state.movelist[i]));
+    memcpy(bestmove, state.movelist[bestMoveIndex], MoveLength(state.movelist[bestMoveIndex]));
 }
 
-double minVal(struct State *state, int depth) {
+double minVal(struct State *state, int depth, double alpha, double beta) {
     if (--depth <= 0) return evalBoard(state);
 
     int x;
@@ -309,15 +310,18 @@ double minVal(struct State *state, int depth) {
         PerformMove(newState.board, state->movelist[x], MoveLength(state->movelist[x]));
         if (state->player == 1) newState.player = 2;
         else newState.player = 1;
-        val = maxVal(&newState, depth);
+        val = maxVal(&newState, depth, alpha, beta);
         if (val < minVal) {
             minVal = val;
         }
+        if (minVal <= alpha) return minVal;
+        if (minVal < beta)
+            beta = minVal;
     }
     return minVal;
 }
 
-double maxVal(struct State *state, int depth) {
+double maxVal(struct State *state, int depth, double alpha, double beta) {
     if (--depth <= 0) return evalBoard(state);
 
     int x;
@@ -333,10 +337,12 @@ double maxVal(struct State *state, int depth) {
         PerformMove(newState.board, state->movelist[x], MoveLength(state->movelist[x]));
         if (state->player == 1) newState.player = 2;
         else newState.player = 1;
-        val = minVal(&newState, depth);
+        val = minVal(&newState, depth, alpha, beta);
         if (val > maxVal) {
             maxVal = val;
         }
+        if (maxVal >= beta) return maxVal;
+        if (alpha < maxVal) alpha = maxVal;
     }
     return maxVal;
 
@@ -477,6 +483,7 @@ int main(int argc, char *argv[]) {
     SecPerMove = (float) atof(argv[1]); /* Time allotted for each move */
     MaxDepth = (argc == 4) ? atoi(argv[3]) : -1;
     MaxDepth = 5;
+    srand48(time(NULL));
 
     fprintf(stderr, "%s SecPerMove == %lg\n", argv[0], SecPerMove);
 
@@ -542,12 +549,14 @@ double evalBoard(State *currBoard) {
 
     for (x = 0; x < 8; x++)
         for (y = 0; y < 8; y++) {
-            if (king(currBoard->board[x][y]))
+            if (king(currBoard->board[x][y])) {
                 if (color(currBoard->board[x][y]) == 1) red_total += 2;
                 else white_total += 2;
-            else if (piece(currBoard->board[x][y])) // this must be a pawn since we've already checked for king
+            } else if (piece(currBoard->board[x][y])) // this must be a pawn since we've already checked for king
+            {
                 if (color(currBoard->board[x][y]) == 1) red_total += 1;
                 else white_total += 1;
+            }
         }
 
     if (me == 1) return red_total - white_total;
@@ -555,5 +564,3 @@ double evalBoard(State *currBoard) {
 
     //return score;
 }
-
-
