@@ -4,6 +4,10 @@
     <df root="." name="0">
       <in>abeProg_1.c</in>
       <in>abeProg_1.h</in>
+      <in>abeProg_2.c</in>
+      <in>abeProg_2.h</in>
+      <in>abeProg_3.c</in>
+      <in>abeProg_3.h</in>
       <in>checkers.c</in>
       <in>checkers.h</in>
       <in>graphics.c</in>

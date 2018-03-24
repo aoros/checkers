@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/times.h>
 #include <time.h>
-#include "abeProg_1.h"
+#include "abeProg_3.h"
 
 #ifndef CLK_TCK
 #define CLK_TCK CLOCKS_PER_SEC
@@ -33,6 +33,9 @@ int movelist[48][12];
 /*** For colors ***/
 int redColor = 1;
 int whiteColor = 2;
+
+/*** For randomization ***/
+int RAND_THRESHOLD = 0.5;
 
 /* Print the amount of time passed since my turn began */
 void PrintTime(void) {
@@ -292,7 +295,7 @@ void FindBestMove(int player) {
             bestMoveIndex = x;
             maxVal = val;
         } else if (val == maxVal) {
-            if (drand48() > 0.5) bestMoveIndex = x;
+            if (drand48() > RAND_THRESHOLD) bestMoveIndex = x;
         }
     }
     memcpy(bestmove, state.movelist[bestMoveIndex], MoveLength(state.movelist[bestMoveIndex]));
@@ -551,14 +554,16 @@ double evalBoard(State *currBoard) {
     int red_total = 0;
     int white_total = 0;
 
+    int numPiecesOnBoard = getNumPiecesOnBoard(currBoard);
+
     for (x = 0; x < 8; x++)
         for (y = 0; y < 8; y++) {
             int pieceColor = color(currBoard->board[x][y]);
 
             if (pieceColor == redColor)
-                red_total += pieceAndRowToValue(currBoard, x, y, redColor);
+                red_total += pieceAndRowToValue(currBoard, x, y, redColor, numPiecesOnBoard);
             else if (pieceColor == whiteColor)
-                white_total += pieceAndRowToValue(currBoard, x, y, whiteColor);
+                white_total += pieceAndRowToValue(currBoard, x, y, whiteColor, numPiecesOnBoard);
         }
 
     if (me == 1)
@@ -573,17 +578,36 @@ double evalBoard(State *currBoard) {
  * @param x
  * @param y
  * @param color
+ * @param numPiecesOnBoard
  * @return 
  */
-int pieceAndRowToValue(State *currBoard, int x, int y, int color) {
-    if (king(currBoard->board[x][y]))
-        return 10;
+int pieceAndRowToValue(State *currBoard, int x, int y, int color, int numPiecesOnBoard) {
+    if (color == redColor) {
+        if (king(currBoard->board[x][y])) {
+            return (7 + y) / numPiecesOnBoard;
+        }
+        return 5 + y;
+    }
 
-    if (color == redColor)
-        return y <= 3 ? 7 : 5;
-
-    if (color == whiteColor)
-        return y >= 4 ? 7 : 5;
+    if (color == whiteColor) {
+        if (king(currBoard->board[x][y])) {
+            return (7 + (7 - y)) / numPiecesOnBoard;
+        }
+        return (5 + (7 - y)) / numPiecesOnBoard;
+    }
 
     return 0;
+}
+
+int getNumPiecesOnBoard(State *currBoard) {
+    int x, y;
+    int numPiecesOnBoard = 0;
+    for (x = 0; x < 8; x++) {
+        for (y = 0; y < 8; y++) {
+            int pieceColor = color(currBoard->board[x][y]);
+            if (pieceColor == redColor || pieceColor == whiteColor)
+                numPiecesOnBoard++;
+        }
+    }
+    return numPiecesOnBoard;
 }

@@ -4,6 +4,10 @@
     <df root="." name="0">
       <in>abeProg_1.c</in>
       <in>abeProg_1.h</in>
+      <in>abeProg_2.c</in>
+      <in>abeProg_2.h</in>
+      <in>abeProg_3.c</in>
+      <in>abeProg_3.h</in>
       <in>checkers.c</in>
       <in>graphics.c</in>
       <in>matadv_w_random.c</in>
@@ -69,6 +73,14 @@
       <item path="abeProg_1.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="abeProg_1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="abeProg_2.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="abeProg_2.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="abeProg_3.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="abeProg_3.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="checkers.c" ex="false" tool="0" flavor2="3">
         <cTool flags="0">

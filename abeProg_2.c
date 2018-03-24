@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/times.h>
 #include <time.h>
-#include "abeProg_1.h"
+#include "abeProg_2.h"
 
 #ifndef CLK_TCK
 #define CLK_TCK CLOCKS_PER_SEC
@@ -576,14 +576,19 @@ double evalBoard(State *currBoard) {
  * @return 
  */
 int pieceAndRowToValue(State *currBoard, int x, int y, int color) {
-    if (king(currBoard->board[x][y]))
-        return 10;
+    if (color == redColor) {
+        if (king(currBoard->board[x][y])) {
+            return 7 + y;
+        }
+        return 5 + y;
+    }
 
-    if (color == redColor)
-        return y <= 3 ? 7 : 5;
-
-    if (color == whiteColor)
-        return y >= 4 ? 7 : 5;
+    if (color == whiteColor) {
+        if (king(currBoard->board[x][y])) {
+            return 7 + (7 - y);
+        }
+        return 5 + (7 - y);
+    }
 
     return 0;
 }
