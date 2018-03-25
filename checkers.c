@@ -235,8 +235,7 @@ int FindLegalMoves(int player) {
                     move[0] = square[y][x].val;
                     FindKingJump(player, board, move, 1, x, y);
                     if (!jumpptr) FindKingMoves(board, x, y);
-                }
-                else { /* Piece */
+                } else { /* Piece */
                     move[0] = square[y][x].val;
                     FindJump(player, board, move, 1, x, y);
                     if (!jumpptr) FindMoves(player, board, x, y);
@@ -407,8 +406,7 @@ void SquareChosen(struct Square *sq) {
                 sq->hilite = turn;
                 UpdateBoard();
             }
-        }
-        else { /* This is NOT the first square chosen */
+        } else { /* This is NOT the first square chosen */
             if (!sq->state) {
                 /* Add square to move list and check to see if the current move */
                 /* is illegal, partially complete, or a completed legal move */
@@ -426,8 +424,7 @@ void SquareChosen(struct Square *sq) {
                     UnHighlightAll();
                     HumanMoved = 1;
                 }
-            }
-            else {
+            } else {
                 hlen = 0;
                 UnHighlightAll();
                 memset(hmove, 0, 12 * sizeof (int));
@@ -587,7 +584,7 @@ int main(int argc, char *argv[]) {
     } else MaxDepth = -1;
 
 #ifndef GRAPHICS
-    printf("No graphics\n");
+    //printf("No graphics\n");
     if (argc != 4) Usage(argv[0]);
     strcpy(player1, argv[1]);
     strcpy(player2, argv[2]);
@@ -602,20 +599,21 @@ int main(int argc, char *argv[]) {
     {
         int x, y;
         /* I'll wait a bit to make sure both oponents are ready to go */
-        printf("waiting\n");
+        //printf("waiting\n");
         sleep(1);
         for (x = 0; x < 1000; x++)
             for (y = 0; y < 10000; y++);
     }
 #endif
     ResetBoard();
+    int count = 1;
     for (;;) {
         pthread_t thread;
         int rc, dummy;
         HandleEvents();
         if (playing) {
             sprintf(str, "Waiting for player %d", turn + 1);
-            Message(str);
+            //Message(str);
             HumanMoved = done = 0;
             //start = times(&bff);
             rc = pthread_create(&thread, NULL, timer, (void*) &done);
@@ -642,8 +640,7 @@ int main(int argc, char *argv[]) {
                 sprintf(str, "Player %d has lost the game (time limit reached).", turn + 1);
                 Message(str);
                 StopGame();
-            }
-            else {
+            } else {
                 if (player[turn] == COMPUTER) {
                     text[tlen] = '\0';
                     memset(move, 0, 12 * sizeof (int));
@@ -694,13 +691,20 @@ int main(int argc, char *argv[]) {
 #ifdef GRAPHICS
                         UpdateBoard();
 #else
-                        printf("Move: %s\n", text);
-                        PrintBoard();
+                        //printf("Move #%i: %s\n", count, text);
+                        count++;
+                        //PrintBoard();
 #endif
                         if (turn) turn = 0;
                         else turn = 1;
 
                         /* Check to see if other player has now lost */
+                        if (count > 1000) {
+                            sprintf(str, "Draw. Possible inf loop. Turn count = %d", count);
+                            Message(str);
+                            StopGame();
+                        }
+
                         numlegal = FindLegalMoves(turn + 1);
                         if (!numlegal) {
                             sprintf(str, "Player %d has lost the game.", turn + 1);

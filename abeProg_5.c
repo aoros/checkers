@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/times.h>
 #include <time.h>
-#include "abeProg_2.h"
+#include "abeProg_5.h"
 
 #ifndef CLK_TCK
 #define CLK_TCK CLOCKS_PER_SEC
@@ -33,6 +34,9 @@ int movelist[48][12];
 /*** For colors ***/
 int redColor = 1;
 int whiteColor = 2;
+
+/*** For randomization ***/
+int RAND_THRESHOLD = 0.5;
 
 /* Print the amount of time passed since my turn began */
 void PrintTime(void) {
@@ -263,7 +267,7 @@ void FindBestMove(int player) {
     int bestMoveIndex;
     struct State state;
 
-    int maxDepth = 2;
+    int maxDepth = 8;
     double maxVal = -10000.0;
 
     /* Set up the current state */
@@ -292,7 +296,7 @@ void FindBestMove(int player) {
             bestMoveIndex = x;
             maxVal = val;
         } else if (val == maxVal) {
-            if (drand48() > 0.5) bestMoveIndex = x;
+            if (drand48() > RAND_THRESHOLD) bestMoveIndex = x;
         }
     }
     memcpy(bestmove, state.movelist[bestMoveIndex], MoveLength(state.movelist[bestMoveIndex]));
@@ -548,18 +552,20 @@ determine_next_move:
 double evalBoard(State *currBoard) {
     //double score =0.0;
     int x, y;
-    int red_total = 0;
-    int white_total = 0;
+    double red_total = 0;
+    double white_total = 0;
+
+    int numPiecesOnBoard = getNumPiecesOnBoard(currBoard);
 
     for (x = 0; x < 8; x++)
         for (y = 0; y < 8; y++) {
-            if (x % 2 != y % 2 && spotHasPiece(currBoard, x, y)) {
+            if (x % 2 != y % 2) {
                 int pieceColor = color(currBoard->board[x][y]);
 
                 if (pieceColor == redColor)
-                    red_total += pieceAndRowToValue(currBoard, x, y, redColor);
+                    red_total += pieceAndRowToValue(currBoard, x, y, redColor, numPiecesOnBoard);
                 else if (pieceColor == whiteColor)
-                    white_total += pieceAndRowToValue(currBoard, x, y, whiteColor);
+                    white_total += pieceAndRowToValue(currBoard, x, y, whiteColor, numPiecesOnBoard);
             }
         }
 
@@ -577,24 +583,68 @@ double evalBoard(State *currBoard) {
  * @param color
  * @return 
  */
-int pieceAndRowToValue(State *currBoard, int x, int y, int color) {
+int pieceAndRowToValue(State *currBoard, int x, int y, int color, int numPiecesOnBoard) {
+    int kingFactor = 9;
+    int pawnFactor = 5;
+    int endGameBaseFactor = 3;
+    int endGameStartCount = 10;
+
+    double endGameFactor = 0.0;
+
+    if (numPiecesOnBoard <= endGameStartCount) {
+        // add to endGameFactor the average distance from opponent pieces
+        endGameFactor = endGameBaseFactor * (1 - (getAveDistFromOpponent(currBoard, x, y, color) / 10));
+    }
+    //if (endGameFactor > 0.01)
+    //    fprintf(stderr, "endGameFactor=%f\n", endGameFactor);
+
     if (color == redColor) {
         if (king(currBoard->board[x][y])) {
-            return 7 + y;
+            return kingFactor + y + endGameFactor;
         } else if (piece(currBoard->board[x][y])) {
-            return 5 + y;
+            return pawnFactor + y + endGameFactor;
         }
     }
 
     if (color == whiteColor) {
         if (king(currBoard->board[x][y])) {
-            return 7 + (7 - y);
+            return kingFactor + (7 - y) + endGameFactor;
         } else if (piece(currBoard->board[x][y])) {
-            return 5 + (7 - y);
+            return pawnFactor + (7 - y) + endGameFactor;
         }
     }
 
     return 0;
+}
+
+double getAveDistFromOpponent(State *currBoard, int x1, int y1, int color) {
+    double totalDist = 0.0;
+    double count = 0.0;
+    int x2, y2;
+    for (x2 = 0; x2 < 8; x2++) {
+        for (y2 = 0; y2 < 8; y2++) {
+            if (x2 % 2 != y2 % 2 && spotHasPiece(currBoard, x2, y2) && color(currBoard->board[x2][y2]) != color) {
+                double dist = sqrt((pow((x2 - x1), 2)) + (pow((y2 - y1), 2)));
+                totalDist = totalDist + dist;
+                count = count + 1.0;
+            }
+        }
+    }
+    //fprintf(stderr, "  totalDist=%f count=%f\n", totalDist, count);
+    return totalDist / count;
+}
+
+int getNumPiecesOnBoard(State *currBoard) {
+    int x, y;
+    int numPiecesOnBoard = 0;
+    for (x = 0; x < 8; x++) {
+        for (y = 0; y < 8; y++) {
+            if (x % 2 != y % 2) {
+                numPiecesOnBoard += spotHasPiece(currBoard, x, y);
+            }
+        }
+    }
+    return numPiecesOnBoard;
 }
 
 int spotHasPiece(State *currBoard, int x, int y) {

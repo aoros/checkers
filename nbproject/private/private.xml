@@ -11,13 +11,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/abeoros/NetBeansProjects/checkers/.gitignore</file>
-            <file>file:/home/abeoros/NetBeansProjects/checkers/matrat_w_random.c</file>
-            <file>file:/home/abeoros/NetBeansProjects/checkers/myProg1.h</file>
-            <file>file:/home/abeoros/NetBeansProjects/checkers/matadv_w_random.h</file>
-            <file>file:/home/abeoros/NetBeansProjects/checkers/myProg1.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/material_advantage.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/graphics.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/abeProg_4.h</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/abeProg_5.h</file>
             <file>file:/home/abeoros/NetBeansProjects/checkers/Makefile</file>
-            <file>file:/home/abeoros/NetBeansProjects/checkers/matrat_w_random.h</file>
-            <file>file:/home/abeoros/NetBeansProjects/checkers/matadv_w_random.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/abeProg_5.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/abeProg_4.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/checkers.c</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/material_advantage.h</file>
+            <file>file:/home/abeoros/NetBeansProjects/checkers/abeProg_2.c</file>
         </group>
     </open-files>
 </project-private>

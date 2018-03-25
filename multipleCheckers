@@ -1,0 +1,24 @@
+#!/bin/bash
+for value in {1..50}
+do
+    echo "processing abe2" value
+    ./checkers ma abe2 10 >> ma_abe2_out
+    ./checkers mr abe2 10 >> mr_abe2_out
+    ./checkers abe2 ma 10 >> abe2_ma_out
+    ./checkers abe2 mr 10 >> abe2_mr_out
+    echo "processing abe3" value
+    ./checkers ma abe3 10 >> ma_abe3_out
+    ./checkers mr abe3 10 >> mr_abe3_out
+    ./checkers abe3 ma 10 >> abe3_ma_out
+    ./checkers abe3 mr 10 >> abe3_mr_out
+    echo "processing abe4" value
+    ./checkers ma abe4 10 >> ma_abe4_out
+    ./checkers mr abe4 10 >> mr_abe4_out
+    ./checkers abe4 ma 10 >> abe4_ma_out
+    ./checkers abe4 mr 10 >> abe4_mr_out
+    echo "processing abe5" value
+    ./checkers ma abe5 10 >> ma_abe5_out
+    ./checkers mr abe5 10 >> mr_abe5_out
+    ./checkers abe5 ma 10 >> abe5_ma_out
+    ./checkers abe5 mr 10 >> abe5_mr_out
+done
